@@ -25,7 +25,7 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - userName: chengxue2020
+          - userName: dzhu567
             repoName: takagen99
             branchName: main
             java_ver: 17
@@ -93,8 +93,8 @@ jobs:
           python -m pip install --upgrade pip
           pip install lxml ujson pyquery requests jsonpath cachetools pycryptodome beautifulsoup4
 
-      - name: Modify pyramid——build.gradle（Takagen99 & chengxue2020）
-        if: ${{ (matrix.userName == 'takagen99' || matrix.userName == 'chengxue2020') && env.commit }}
+      - name: Modify pyramid——build.gradle（Takagen99 & dzhu567）
+        if: ${{ (matrix.userName == 'takagen99' || matrix.userName == 'dzhu567') && env.commit }}
         working-directory: TVBoxOSC
         run: |
           sed -i '/buildPython.*python.exe/d' pyramid/build.gradle
