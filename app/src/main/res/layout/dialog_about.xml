@@ -3,7 +3,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="STVBox_takagen99_20240929_1529_leanback_armeabi_v7a-generic_java32"
+        android:text="@string/about_version_name"
         android:textColor="@color/color_FFFFFF"
         android:textSize="@dimen/ts_22"
         android:layout_marginBottom="@dimen/vs_10" />
