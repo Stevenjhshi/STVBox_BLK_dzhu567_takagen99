@@ -1,3 +1,6 @@
+permissions:
+  contents: write
+
 name: Test Build
 
 on:
@@ -36,3 +39,10 @@ jobs:
         with:
           name: com.github.tvbox.osc
           path: ${{ github.workspace }}/apk/*
+          
+      - name: Create Release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: Build-${{ github.run_number }}
+          name: Release ${{ github.run_number }}
+          files: ${{ github.workspace }}/apk/*.apk
