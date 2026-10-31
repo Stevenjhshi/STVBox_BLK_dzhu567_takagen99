@@ -9,9 +9,9 @@ def static buildTime() {
 
 android {
     compileSdk 34
-
+v
     defaultConfig {
-        applicationId 'com.stvbox.black.' + buildTime().replace("_", "")
+        applicationId 'com.stvbox.black.v' + buildTime().replace("_", "")
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
