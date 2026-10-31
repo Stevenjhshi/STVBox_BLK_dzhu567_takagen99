@@ -7,11 +7,13 @@ def static buildTime() {
     return new Date().format("yyyyMMdd_HHmm", TimeZone.getTimeZone("GMT+08:00"))
 }
 
+def safeId = 'com.stvbox.black.v' + buildTime().replace('_', '')
+
 android {
     compileSdk 34
-v
+
     defaultConfig {
-        applicationId "com.stvbox.black.v${buildTime().replace('_', '')}"
+        applicationId safeId
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
