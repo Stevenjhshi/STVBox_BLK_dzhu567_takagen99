@@ -22,6 +22,8 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+      - name: Get current time
+        run: echo "formatted_time=$(TZ='Asia/Shanghai' date +'%Y%m%d_%H%M')" >> $GITHUB_ENV
       - name: Create local.properties
         run: echo "sdk.dir=$ANDROID_HOME" > local.properties
       - name: Build With Gradle
@@ -32,7 +34,7 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/apk/
           for file in `find ~ -name "*.apk" -print`; do
-            mv "$file" ${{ github.workspace }}/apk/
+            mv "$file" "${{ github.workspace }}/apk/STVBox_${{ env.formatted_time }}_armeabi-v7a-java32.apk"
           done
       - name: Upload App To Artifact
         uses: actions/upload-artifact@v4
@@ -43,6 +45,6 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: Build-${{ github.run_number }}
-          name: Release ${{ github.run_number }}
+          tag_name: STVBox_${{ env.formatted_time }}
+          name: STVBox_${{ env.formatted_time }}
           files: ${{ github.workspace }}/apk/*.apk
