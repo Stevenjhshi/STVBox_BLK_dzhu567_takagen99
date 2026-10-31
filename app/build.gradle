@@ -11,7 +11,7 @@ android {
     compileSdk 34
 
     defaultConfig {
-        applicationId 'com.stvbox.black.' + buildTime()
+        applicationId 'com.stvbox.black.' + buildTime().replace("_", "")
         minSdkVersion 21
         targetSdkVersion 28
         versionCode 1
