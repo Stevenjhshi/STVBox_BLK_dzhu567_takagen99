@@ -33,7 +33,7 @@ android {
         release {
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
             minifyEnabled true
-
+            signingConfig signingConfigs.debug
         }
     }
     flavorDimensions +=[ "abi","brand" ]
