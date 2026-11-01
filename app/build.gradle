@@ -19,7 +19,7 @@ android {
         versionCode 1
         versionName "1.0.".concat(buildTime())
         multiDexEnabled true
-        resValue "string", "about_version_name", "STVBox_" + buildTime() + "_armeabi-v7a-java32"
+        resValue "string", "about_version_name", "STVBox_BLK_" + buildTime() + "_armeabi-v7a-java32"
         //设置room的Schema的位置
         javaCompileOptions {
             annotationProcessorOptions {
