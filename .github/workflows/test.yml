@@ -34,7 +34,7 @@ jobs:
         run: |
           mkdir -p ${{ github.workspace }}/apk/
           for file in `find ~ -name "*.apk" -print`; do
-            mv "$file" "${{ github.workspace }}/apk/STVBox_${{ env.formatted_time }}_armeabi-v7a-java32.apk"
+            mv "$file" "${{ github.workspace }}/apk/STVBox_BLK_${{ env.formatted_time }}_armeabi-v7a-java32.apk"
           done
       - name: Upload App To Artifact
         uses: actions/upload-artifact@v4
@@ -45,6 +45,6 @@ jobs:
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          tag_name: STVBox_${{ env.formatted_time }}
-          name: STVBox_${{ env.formatted_time }}
+          tag_name: STVBox_BLK_${{ env.formatted_time }}
+          name: STVBox_BLK_${{ env.formatted_time }}
           files: ${{ github.workspace }}/apk/*.apk
