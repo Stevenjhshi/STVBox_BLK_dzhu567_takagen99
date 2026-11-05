@@ -9,6 +9,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Base64;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
@@ -1753,21 +1754,41 @@ public class LivePlayActivity extends BaseActivity {
             return;
         }
         showLoading();
-        OkGo.<String>get(url).execute(new AbsCallback<String>() {
+        OkGo.<String>get(url)
+                .headers("User-Agent", "okhttp/3.15")
+                .readTimeOut(20000)
+                .execute(new AbsCallback<String>() {
 
             @Override
             public String convertResponse(okhttp3.Response response) throws Throwable {
-                return response.body().string();
+                okhttp3.ResponseBody responseBody = response.body();
+                if (responseBody == null) return "";
+                byte[] bytes = responseBody.bytes();
+                java.nio.charset.Charset charset = null;
+                okhttp3.MediaType contentType = responseBody.contentType();
+                if (contentType != null) {
+                    charset = contentType.charset();
+                }
+                if (charset == null) charset = java.nio.charset.StandardCharsets.UTF_8;
+                String result = new String(bytes, charset);
+                if ("UTF-8".equalsIgnoreCase(charset.name()) && result.contains("\uFFFD")) {
+                    result = new String(bytes, "GBK");
+                }
+                return result;
             }
 
             @Override
             public void onSuccess(Response<String> response) {
-                JsonArray livesArray;
                 LinkedHashMap<String, LinkedHashMap<String, ArrayList<String>>> linkedHashMap = new LinkedHashMap<>();
-                TxtSubscribe.parse(linkedHashMap, response.body());
-                livesArray = TxtSubscribe.live2JsonArray(linkedHashMap);
-
-                ApiConfig.get().loadLives(livesArray);
+                try {
+                    TxtSubscribe.parse(linkedHashMap, response.body());
+                    JsonArray livesArray = TxtSubscribe.live2JsonArray(linkedHashMap);
+                    ApiConfig.get().loadLives(livesArray);
+                } catch (Throwable th) {
+                    Log.e("LivePlayActivity", "loadProxyLives parse error", th);
+                    Toast.makeText(App.getInstance(), getString(R.string.act_live_play_empty_channel), Toast.LENGTH_SHORT).show();
+                    return;
+                }
                 List<LiveChannelGroup> list = ApiConfig.get().getChannelGroupList();
                 if (list.isEmpty()) {
                     Toast.makeText(App.getInstance(), getString(R.string.act_live_play_empty_channel), Toast.LENGTH_SHORT).show();
@@ -1777,6 +1798,7 @@ public class LivePlayActivity extends BaseActivity {
                 liveChannelGroupList.clear();
                 liveChannelGroupList.addAll(list);
 
+                if (isFinishing()) return;
                 mHandler.post(new Runnable() {
                     @Override
                     public void run() {

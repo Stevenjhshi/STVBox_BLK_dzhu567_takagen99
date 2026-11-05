@@ -699,6 +699,8 @@ public class PlayFragment extends BaseLazyFragment {
 
         OkGo.<String>get(url)
                 .tag("m3u8-1")
+                .connTimeOut(5000)
+                .readTimeOut(5000)
                 .headers(hheaders)
                 .execute(new AbsCallback<String>() {
                     @Override
@@ -752,6 +754,8 @@ public class PlayFragment extends BaseLazyFragment {
                         final String finalforwardurl = forwardurl;
                         OkGo.<String>get(forwardurl)
                                 .tag("m3u8-2")
+                                .connTimeOut(5000)
+                                .readTimeOut(5000)
                                 .headers(hheaders)
                                 .execute(new AbsCallback<String>() {
                                     @Override
