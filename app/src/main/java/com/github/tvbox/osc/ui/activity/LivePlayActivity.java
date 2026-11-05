@@ -55,6 +55,7 @@ import com.github.tvbox.osc.util.FastClickCheckUtil;
 import com.github.tvbox.osc.util.HawkConfig;
 import com.github.tvbox.osc.util.HawkUtils;
 import com.github.tvbox.osc.util.JavaUtil;
+import com.github.tvbox.osc.util.OkGoHelper;
 import com.github.tvbox.osc.util.live.TxtSubscribe;
 import com.google.gson.JsonArray;
 import com.lzy.okgo.OkGo;
@@ -86,6 +87,9 @@ import java.util.Locale;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.TimeZone;
+import java.util.concurrent.TimeUnit;
+
+import okhttp3.OkHttpClient;
 
 import kotlin.Pair;
 import xyz.doikki.videoplayer.player.VideoView;
@@ -1754,9 +1758,12 @@ public class LivePlayActivity extends BaseActivity {
             return;
         }
         showLoading();
+        OkHttpClient liveClient = OkGoHelper.getDefaultClient().newBuilder()
+                .readTimeout(20000, TimeUnit.MILLISECONDS)
+                .build();
         OkGo.<String>get(url)
+                .client(liveClient)
                 .headers("User-Agent", "okhttp/3.15")
-                .readTimeOut(20000)
                 .execute(new AbsCallback<String>() {
 
             @Override
